@@ -77,6 +77,10 @@ K4AROSDevice::K4AROSDevice()
   this->declare_parameter("imu_rate_target", rclcpp::ParameterValue(0));
   this->declare_parameter("wired_sync_mode", rclcpp::ParameterValue(0));
   this->declare_parameter("subordinate_delay_off_master_usec", rclcpp::ParameterValue(0));
+  // addded by mingrui
+  this->declare_parameter("color_control_mode_auto", rclcpp::ParameterValue(true));
+  this->declare_parameter("color_exposure_usec", rclcpp::ParameterValue(10000));
+
 
   // Collect ROS parameters from the param server or from the command line
 #define LIST_ENTRY(param_variable, param_help_string, param_type, param_default_val) \
@@ -356,6 +360,13 @@ k4a_result_t K4AROSDevice::startCameras()
   {
     RCLCPP_INFO_STREAM(this->get_logger(),"STARTING CAMERAS");
     k4a_device_.start_cameras(&k4a_configuration);
+
+    // mingrui added, auto/manual exposure
+    if(params_.color_control_mode_auto){
+      k4a_device_.set_color_control(K4A_COLOR_CONTROL_EXPOSURE_TIME_ABSOLUTE, K4A_COLOR_CONTROL_MODE_AUTO , 0);
+    }else{
+      k4a_device_.set_color_control(K4A_COLOR_CONTROL_EXPOSURE_TIME_ABSOLUTE, K4A_COLOR_CONTROL_MODE_MANUAL, params_.color_exposure_usec);
+    }
   }
 
   // Cannot assume the device timestamp begins increasing upon starting the cameras.

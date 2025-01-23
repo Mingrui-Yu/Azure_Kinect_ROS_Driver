@@ -30,7 +30,7 @@ Once Rviz2 launches change "Fixed Frame" to "camera_body". Visualize the image s
 
 The Azure Kinect ROS Driver node accepts a number of [ROS Parameters](http://wiki.ros.org/Parameter%20Server) to configure the Azure Kinect DK sensor. Since the node uses the ROS parameter server, these parameters can be set in the usual ROS ways (on the command line, in a launch file, through the parameter server, etc..).
 
-The node accepts the following parameters:
+The node accepts the following parameters (some of the default parameter values are **NOT correct**, please check the launch file):
 
 - `sensor_sn` (string) : No default value. The serial number of the Azure Kinect DK that the node should open. If this parameter is not specified, the node will auto-select the first Azure Kinect DK that it finds.
 - `depth_enabled` (bool) : Default to '`true`'. Controls if the depth camera will be turned on.
@@ -50,6 +50,10 @@ The node accepts the following parameters:
 - `imu_rate_target` (int) : Defaults to `0`. Controls the desired IMU message rate, which is rounded to the closest allowable value.  IMU samples from the device are integrated and a mean sample is published at this rate. A value of `0` is interpreted to mean a request for the maximum rate from the sensor (approx. 1.6 kHz).  
 - `wired_sync_mode` (int) : Defaults to `0`. Sets the external wired synchronization mode. The modes are: `0: OFF (STANDALONE)`, `1: MASTER`, `2: SUBORDINATE`.
 - `subordinate_delay_off_master_usec` (int) : Defaults to `0`. Delay subordinate camera off master camera by specified amount in usec. Recommended minimum value is 160.
+- **Below are added by Mingrui Yu:**
+    - `color_control_mode_auto` (bool) : Color control mode (true: auto; false: manual).
+    - `color_exposure_usec` (int) : Exposure time in usec (only used if the color control mode is mannual).
+
 #### Parameter Restrictions
 
 Some parameters are incompatible with each other. The ROS node attempts to detect incompatible parameters and provide a runtime error to roserr: however, not all potential incompatibilities have been accounted for. In these instances, the Azure Kinect Sensor SDK may throw an exception.
