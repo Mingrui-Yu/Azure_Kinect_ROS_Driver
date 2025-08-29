@@ -117,6 +117,7 @@ install(TARGETS ${PROJECT_NAME}_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME} # mingrui add: support usage with colcon build --symlink-install
   DESTINATION lib/${PROJECT_NAME}
 )
 
